@@ -1,4 +1,4 @@
-export default [
+const images = [
   {
     preview:
       'https://cdn.pixabay.com/photo/2019/05/14/16/43/himilayan-blue-poppy-4202825__340.jpg',
@@ -13,7 +13,7 @@ export default [
       'https://cdn.pixabay.com/photo/2019/05/14/22/05/container-4203677_1280.jpg',
     description: 'Container Haulage Freight',
   },
-  {
+  { 
     preview:
       'https://cdn.pixabay.com/photo/2019/05/16/09/47/beach-4206785__340.jpg',
     original:
@@ -63,3 +63,41 @@ export default [
     description: 'Lighthouse Coast Sea',
   },
 ];
+
+const gallery = document.querySelector('.js-gallery');
+const lightBox = document.querySelector('.lightbox');
+const closeBtn = document.querySelector('[data-action="close-lightbox"]')
+
+  images.forEach(pic => {
+
+  let liItem = document.createElement('li');
+  liItem.classList.add('gallery__item');
+
+  liItem.insertAdjacentHTML('beforeend', `<a class = 'gallery__link' href = '${pic.original}'><img class = 'gallery__image' src='${pic.preview}' data-source = '${pic.original}' alt = '${pic.description}'></a></li>`);
+  
+    gallery.append(liItem)
+  })
+
+function handlerPic (event) {
+  event.preventDefault();
+
+  if (event.target.nodeName === 'IMG'){
+
+    const activeImg = event.target;
+    lightBox.querySelector('.lightbox__image').src = activeImg.dataset.source;
+    lightBox.querySelector('.lightbox__image').alt = activeImg.alt;
+    lightBox.classList.add('is-open');
+  }
+}
+
+function handlerClose (event) {
+
+  if (event.target.nodeName === "BUTTON"){
+    
+    lightBox.classList.remove('is-open');
+    lightBox.querySelector('.lightbox__image').src = "";
+  }
+}
+
+gallery.addEventListener('click', handlerPic);
+closeBtn.addEventListener('click', handlerClose);
