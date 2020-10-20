@@ -66,7 +66,8 @@ const images = [
 
 const gallery = document.querySelector('.js-gallery');
 const lightBox = document.querySelector('.lightbox');
-const closeBtn = document.querySelector('[data-action="close-lightbox"]')
+const closeBtn = document.querySelector('[data-action="close-lightbox"]');
+
 
   images.forEach(pic => {
 
@@ -96,6 +97,7 @@ function handlerClose (event) {
     
     lightBox.classList.remove('is-open');
     lightBox.querySelector('.lightbox__image').src = "";
+    closeBtn.removeEventListener('click', handlerPic);
   }
 }
 
