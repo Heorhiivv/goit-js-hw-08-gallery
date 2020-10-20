@@ -80,13 +80,9 @@ const backdropRef = document.querySelector('.lightbox__overlay')
   })
 
 function handlerPic () {
-  
   event.preventDefault();
-  window.addEventListener('keydown', event => {
-  if (event.code === 'Escape') {
-    handlerClose();
-  }
-})
+
+  window.addEventListener('keydown', onESCPress);
   if (event.target.nodeName === 'IMG'){
 
     const activeImg = event.target;
@@ -104,6 +100,12 @@ function handlerClose () {
 
 function onBackdropClick(event) {
     if(event.target === event.currentTarget) {
+      handlerClose();
+    }
+  }
+
+function onESCPress (event) {
+    if (event.code === 'Escape') {
       handlerClose();
     }
   }
