@@ -93,6 +93,7 @@ function handlerPic () {
 }
 
 function handlerClose () {
+  window.removeEventListener('keydown', onESCPress);
   lightBox.classList.remove('is-open');
   lightBox.querySelector('.lightbox__image').src = "";
   lightBox.classList.remove('is-open');
