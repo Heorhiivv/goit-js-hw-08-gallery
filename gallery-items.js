@@ -67,7 +67,7 @@ const images = [
 const gallery = document.querySelector('.js-gallery');
 const lightBox = document.querySelector('.lightbox');
 const closeBtn = document.querySelector('[data-action="close-lightbox"]');
-
+const backdropRef = document.querySelector('.lightbox__overlay')
 
   images.forEach(pic => {
 
@@ -79,9 +79,14 @@ const closeBtn = document.querySelector('[data-action="close-lightbox"]');
     gallery.append(liItem)
   })
 
-function handlerPic (event) {
+function handlerPic () {
+  
   event.preventDefault();
-
+  window.addEventListener('keydown', event => {
+  if (event.code === 'Escape') {
+    handlerClose();
+  }
+})
   if (event.target.nodeName === 'IMG'){
 
     const activeImg = event.target;
@@ -91,15 +96,18 @@ function handlerPic (event) {
   }
 }
 
-function handlerClose (event) {
-
-  if (event.target.nodeName === "BUTTON"){
-    
-    lightBox.classList.remove('is-open');
-    lightBox.querySelector('.lightbox__image').src = "";
-    closeBtn.removeEventListener('click', handlerPic);
-  }
+function handlerClose () {
+  lightBox.classList.remove('is-open');
+  lightBox.querySelector('.lightbox__image').src = "";
+  lightBox.classList.remove('is-open');
 }
+
+function onBackdropClick(event) {
+    if(event.target === event.currentTarget) {
+      handlerClose();
+    }
+  }
 
 gallery.addEventListener('click', handlerPic);
 closeBtn.addEventListener('click', handlerClose);
+backdropRef.addEventListener('click', onBackdropClick)
