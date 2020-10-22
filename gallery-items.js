@@ -67,49 +67,53 @@ const images = [
 const gallery = document.querySelector('.js-gallery');
 const lightBox = document.querySelector('.lightbox');
 const closeBtn = document.querySelector('[data-action="close-lightbox"]');
-const backdropRef = document.querySelector('.lightbox__overlay')
+const backdropRef = document.querySelector('.lightbox__overlay');
+const backdropImg = lightBox.querySelector('.lightbox__image');
+
 
   images.forEach(pic => {
 
   let liItem = document.createElement('li');
-  liItem.classList.add('gallery__item');
+    liItem.classList.add('gallery__item');
 
-  liItem.insertAdjacentHTML('beforeend', `<a class = 'gallery__link' href = '${pic.original}'><img class = 'gallery__image' src='${pic.preview}' data-source = '${pic.original}' alt = '${pic.description}'></a></li>`);
-  
+    liItem.insertAdjacentHTML('beforeend', `<a class = 'gallery__link' href = '${pic.original}'><img class = 'gallery__image' src='${pic.preview}' data-source = '${pic.original}' alt = '${pic.description}'></a></li>`);
+    
     gallery.append(liItem)
   })
 
-function handlerPic () {
+  const handlerPic = function (event) {
   event.preventDefault();
 
-  window.addEventListener('keydown', onESCPress);
-  if (event.target.nodeName === 'IMG'){
+  if (event.target.nodeName !== 'IMG') return;
 
-    const activeImg = event.target;
-    lightBox.querySelector('.lightbox__image').src = activeImg.dataset.source;
-    lightBox.querySelector('.lightbox__image').alt = activeImg.alt;
-    lightBox.classList.add('is-open');
-  }
-}
+      const activeImg = event.target;
+      backdropImg.src = activeImg.dataset.source;
+      backdropImg.alt = activeImg.alt;
+      lightBox.classList.add('is-open');
 
-function handlerClose () {
-  window.removeEventListener('keydown', onESCPress);
-  lightBox.classList.remove('is-open');
-  lightBox.querySelector('.lightbox__image').src = "";
-  lightBox.classList.remove('is-open');
-}
+      window.addEventListener('keydown', onESCPress);
+      lightBox.addEventListener('click', handlerClose);
+  };
 
-function onBackdropClick(event) {
+  const onESCPress = function (event) {
+    if (event.code === 'Escape') {
+      handlerClose();
+    };
+  };
+
+  const handlerClose = function () {
+    backdropImg.src = "";
+    lightBox.classList.remove('is-open');
+
+    window.removeEventListener('keydown', onESCPress);
+    lightBox.removeEventListener('click', handlerClose);
+  };
+
+  const onBackdropClick = function (event) {
     if(event.target === event.currentTarget) {
       handlerClose();
     }
-  }
-
-function onESCPress (event) {
-    if (event.code === 'Escape') {
-      handlerClose();
-    }
-  }
+  };
 
 gallery.addEventListener('click', handlerPic);
 closeBtn.addEventListener('click', handlerClose);
